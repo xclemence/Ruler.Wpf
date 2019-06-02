@@ -98,7 +98,7 @@ namespace Ruler.Wpf
             //DrawhRuler();
         }
         
-        private bool CanDrawRuler() => SlaveStepProperties != null || (MajorStepValues != null && !double.IsNaN(MaxValue));
+        private bool CanDrawRuler() => SlaveStepProperties != null || (MajorStepValues != null && !double.IsNaN(MaxValue) && MaxValue > 0);
 
         private void DrawRuler()
         {

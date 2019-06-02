@@ -38,23 +38,36 @@
         </Grid.RowDefinitions>
 
         <ruler:Ruler x:Name="topRuler"
-                     TextMargin="5 0"
                      Grid.Column="1"
                      VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch" 
                      MarkerControlReference="{Binding ElementName=mainView}"
                      MaxValue="{Binding ElementName=maxTopValueSlider, Path=Value, Delay=5}"
                      MajorStepValues="{Binding MajorStep}"
-                     ValueStepTransform="{Binding ValueStepTransform}"/>
+                     ValueStepTransform="{Binding ValueStepTransform}">
+            <ruler:Ruler.Resources>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Margin" Value="5 0"/>
+                </Style>
+            </ruler:Ruler.Resources>
+        </ruler:Ruler>
 
         <ruler:Ruler Grid.Row="1"
-                     TextMargin="2 5"
                      VerticalAlignment="Stretch"
                      Position="Left"
-                     Foreground="Red"
                      MarkerControlReference="{Binding ElementName=mainView}"
                      MaxValue="{Binding ElementName=maxLeftValueSlider, Path=Value, Delay=5}"
-                     MajorStepValues="{Binding MajorStep}"/>
+                     MajorStepValues="{Binding MajorStep}">
+            <ruler:Ruler.Resources>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                    <Setter Property="Foreground" Value="Blue"/>
+                    <Setter Property="LineHeight" Value="12"/>
+                    <Setter Property="LineStackingStrategy" Value="BlockLineHeight"/>
+                    <Setter Property="Margin" Value="2 5"/>
+                    <Setter Property="FontSize" Value="10"/>
+                </Style>
+            </ruler:Ruler.Resources>
+        </ruler:Ruler>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="10" HorizontalAlignment="Stretch">
             <GroupBox Header="Reference ">

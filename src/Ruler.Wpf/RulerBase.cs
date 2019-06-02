@@ -16,9 +16,7 @@ namespace Ruler.Wpf
         public static readonly DependencyProperty StepPropertiesProperty = DependencyProperty.Register(nameof(StepProperties), typeof(RulerStepProperties), typeof(RulerBase), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty SlaveStepPropertiesProperty = DependencyProperty.Register(nameof(SlaveStepProperties), typeof(RulerStepProperties), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
         public static readonly DependencyProperty StepColorProperty = DependencyProperty.Register(nameof(StepColor), typeof(Brush), typeof(RulerBase), new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black), OnChangedRulerUpdate));
-        public static readonly DependencyProperty TextMarginProperty = DependencyProperty.Register(nameof(TextMargin), typeof(Thickness), typeof(RulerBase), new FrameworkPropertyMetadata(new Thickness(2), OnChangedRulerUpdate));
         public static readonly DependencyProperty TextFormatProperty = DependencyProperty.Register(nameof(TextFormat), typeof(string), typeof(RulerBase), new FrameworkPropertyMetadata("N0", OnChangedRulerUpdate));
-        public static readonly DependencyProperty TextLineHeightProperty = DependencyProperty.Register(nameof(TextLineHeight), typeof(double), typeof(RulerBase), new FrameworkPropertyMetadata(12.0, OnChangedRulerUpdate));
         public static readonly DependencyProperty MajorStepValuesProperty = DependencyProperty.Register(nameof(MajorStepValues), typeof(IEnumerable<int>), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
         public static readonly DependencyProperty ValueStepTransformProperty = DependencyProperty.Register(nameof(ValueStepTransform), typeof(Func<double, double>), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
         
@@ -65,23 +63,12 @@ namespace Ruler.Wpf
             set => SetValue(StepColorProperty, value);
         }
 
-        public Thickness TextMargin
-        {
-            get => (Thickness)GetValue(TextMarginProperty);
-            set => SetValue(TextMarginProperty, value);
-        }
-
         public string TextFormat
         {
             get => (string)GetValue(TextFormatProperty);
             set => SetValue(TextFormatProperty, value);
         }
 
-        public double TextLineHeight
-        {
-            get => (double)GetValue(TextLineHeightProperty);
-            set => SetValue(TextLineHeightProperty, value);
-        }
 
         public IEnumerable<int> MajorStepValues
         {

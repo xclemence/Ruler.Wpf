@@ -39,12 +39,7 @@ namespace Ruler.Wpf.PositionManagers
 
         protected virtual TextBlock GetTextBlock(string text)
         {
-            return new TextBlock
-            {
-                Text = text,
-                Margin = Control.TextMargin,
-                Foreground = Control.Foreground,
-            };
+            return new TextBlock { Text = text };
         }
     }
 }

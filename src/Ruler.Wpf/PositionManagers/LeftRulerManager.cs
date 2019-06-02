@@ -44,13 +44,11 @@ namespace Ruler.Wpf.PositionManagers
         {
             var text = value.ToString(Control.TextFormat, CultureInfo.CurrentCulture)
                             .Select(x => x.ToString())
+                            .Where(x => !string.IsNullOrWhiteSpace(x))
                             .Aggregate((x, y) => $"{x}{Environment.NewLine}{y}");
 
 
             var textBlock = GetTextBlock(text);
-
-            textBlock.LineHeight = Control.TextLineHeight;
-            textBlock.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
 
             textBlock.SetValue(Canvas.TopProperty, offset);
 

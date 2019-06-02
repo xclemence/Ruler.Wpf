@@ -7,18 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="RulerControl.xaml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="RulerControl.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="RulerControl.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Reactive" Version="4.1.5" />
   </ItemGroup>
 
