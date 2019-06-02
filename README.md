@@ -1,2 +1,4 @@
 # Ruler.Wpf
-Simple Ruler for wpf
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Simple ruler for wpf
