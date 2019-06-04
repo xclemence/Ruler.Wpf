@@ -5,6 +5,7 @@ using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Ruler.Wpf.PositionManagers;
 
@@ -15,8 +16,12 @@ namespace Ruler.Wpf
         private readonly Subject<int> updateSubject;
         private IDisposable updateSubcription;
         private RulerPositionManager rulerPostionControl;
+        
         private Line marker;
-        private Canvas rulerSteps;
+        private Canvas firstMajorStepControl;
+        private Canvas labelsControl;
+        private Rectangle stepRepeaterControl;
+        private VisualBrush stepRepeaterBrush;
 
         public Ruler()
         {
@@ -29,7 +34,10 @@ namespace Ruler.Wpf
         }
 
         private Line Marker => marker ?? (marker = Template.FindName("marker", this) as Line);
-        private Canvas RulerSteps => rulerSteps ?? (rulerSteps = Template.FindName("rulerSteps", this) as Canvas);
+        private Canvas FirstMajorStepControl => firstMajorStepControl ?? (firstMajorStepControl = Template.FindName("firstMajorStepControl", this) as Canvas);
+        private Rectangle StepRepeaterControl => stepRepeaterControl ?? (stepRepeaterControl = Template.FindName("stepRepeaterControl", this) as Rectangle);
+        private VisualBrush StepRepeaterBrush => stepRepeaterBrush ?? (stepRepeaterBrush = Template.FindName("stepRepeaterBrush", this) as VisualBrush);
+        private Canvas LabelsControl => labelsControl ?? (labelsControl = Template.FindName("labelsControl", this) as Canvas);
 
         private void OnRulerLoaded(object sender, RoutedEventArgs e)
         {
@@ -110,22 +118,25 @@ namespace Ruler.Wpf
 
             var subPixelSize = pixelStep / 10;
 
-            RulerSteps.Children.Clear();
+            FirstMajorStepControl.Children.Clear();
+            LabelsControl.Children.Clear();
+
+            GenerateSubSteps(subPixelSize, 0);
+
+            FirstMajorStepControl.Children.Add(rulerPostionControl.CreateMajorLine(pixelStep));
+
+            rulerPostionControl.UpdateFirstStepControl(FirstMajorStepControl, pixelStep);
+            rulerPostionControl.UpdateStepRepeaterControl(StepRepeaterControl, StepRepeaterBrush, pixelStep);
+
+            StepRepeaterBrush.Visual = FirstMajorStepControl;
 
             double offset;
             for (int i = 0; i < stepNumber; ++i)
             {
                 offset = pixelStep * i;
 
-                if (offset > rulerPostionControl.GetSize())
-                    continue;
-
-                RulerSteps.Children.Add(rulerPostionControl.CreateMajorLine(offset));
-
                 if (offset + pixelStep <= rulerPostionControl.GetSize())
-                    RulerSteps.Children.Add(rulerPostionControl.CreateText(i * valueStep, offset));
-
-                GenerateSubSteps(subPixelSize, offset);
+                    LabelsControl.Children.Add(rulerPostionControl.CreateText(i * valueStep, offset));
             }
         }
 
@@ -181,7 +192,7 @@ namespace Ruler.Wpf
                 if (subOffset > rulerPostionControl.GetSize())
                     continue;
 
-                RulerSteps.Children.Add(rulerPostionControl.CreateMinorLine(subOffset));
+                FirstMajorStepControl.Children.Add(rulerPostionControl.CreateMinorLine(subOffset));
             }
         }
 

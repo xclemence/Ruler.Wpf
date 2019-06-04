@@ -27,6 +27,9 @@ namespace Ruler.Wpf.PositionManagers
 
         public abstract bool UpdateMakerPosition(Line marker, Point position);
 
+        public abstract void UpdateFirstStepControl(Canvas control, double stepSize);
+        public abstract void UpdateStepRepeaterControl(Rectangle control, VisualBrush brush, double stepSize);
+
         protected virtual Line GetBaseLine() 
         {
             return new Line
@@ -41,5 +44,6 @@ namespace Ruler.Wpf.PositionManagers
         {
             return new TextBlock { Text = text };
         }
+
     }
 }

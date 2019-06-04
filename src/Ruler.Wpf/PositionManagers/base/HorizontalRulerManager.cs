@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Ruler.Wpf.PositionManagers
@@ -11,6 +13,18 @@ namespace Ruler.Wpf.PositionManagers
 
         public override double GetSize() => Control.ActualWidth;
         public override double GetHeight() => Control.ActualHeight;
+
+        public override void UpdateFirstStepControl(Canvas control, double stepSize)
+        {
+            control.HorizontalAlignment = HorizontalAlignment.Left;
+            control.Width = stepSize;
+        }
+
+        public override void UpdateStepRepeaterControl(Rectangle control, VisualBrush brush, double stepSize)
+        {
+            brush.Viewport = new Rect(0, 0, stepSize, GetHeight());
+            control.Margin = new Thickness(stepSize, 0, 0, 0);
+        }
 
         public override bool UpdateMakerPosition(Line marker, Point position)
         {

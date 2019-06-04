@@ -97,6 +97,8 @@
                 <ruler:Ruler SlaveStepProperties="{Binding ElementName=topRuler, Path=StepProperties, Delay=5}" 
                              Margin="40 0" Height="40" 
                              StepColor="Orange"
+                             Foreground="White"
+                             Background="Black"
                              TextFormat="N2"/>
             </GroupBox>
         </StackPanel>
