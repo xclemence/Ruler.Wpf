@@ -57,6 +57,7 @@
                      Position="Left"
                      MarkerControlReference="{Binding ElementName=mainView}"
                      MaxValue="{Binding ElementName=maxLeftValueSlider, Path=Value, Delay=5}"
+                     MinorStepRatio="0.1"
                      MajorStepValues="{Binding MajorStep}">
             <ruler:Ruler.Resources>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">

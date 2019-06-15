@@ -1,7 +1,12 @@
-﻿using System;
+﻿//  
+// Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
+// Licensed under the MIT License. See LICENSE file in the project root for full license information. 
+// Ruler Wpf Version 2.0
+// 
+
+using System;
 using System.Globalization;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
@@ -31,7 +36,7 @@ namespace Ruler.Wpf.PositionManagers
             var height = GetHeight();
             var line = GetBaseLine();
 
-            line.X1 = height * 2 / 3;
+            line.X1 = height * (1 - Control.MinorStepRatio);
             line.Y1 = offset;
          
             line.X2 = height;

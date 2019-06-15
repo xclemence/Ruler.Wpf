@@ -1,4 +1,10 @@
-﻿using System;
+﻿//  
+// Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
+// Licensed under the MIT License. See LICENSE file in the project root for full license information. 
+// Ruler Wpf Version 2.0
+// 
+
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +25,7 @@ namespace Ruler.Wpf
         public static readonly DependencyProperty TextFormatProperty = DependencyProperty.Register(nameof(TextFormat), typeof(string), typeof(RulerBase), new FrameworkPropertyMetadata("N0", OnChangedRulerUpdate));
         public static readonly DependencyProperty MajorStepValuesProperty = DependencyProperty.Register(nameof(MajorStepValues), typeof(IEnumerable<int>), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
         public static readonly DependencyProperty ValueStepTransformProperty = DependencyProperty.Register(nameof(ValueStepTransform), typeof(Func<double, double>), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
+        public static readonly DependencyProperty MinorStepRatioProperty = DependencyProperty.Register(nameof(MinorStepRatio), typeof(double), typeof(RulerBase), new FrameworkPropertyMetadata(0.33, OnChangedRulerUpdate));
         
         public RulerPosition Position
         {
@@ -80,6 +87,12 @@ namespace Ruler.Wpf
         {
             get => (Func<double, double>)GetValue(ValueStepTransformProperty);
             set => SetValue(ValueStepTransformProperty, value);
+        }
+
+        public double MinorStepRatio
+        {
+            get => (double)GetValue(MinorStepRatioProperty);
+            set => SetValue(MinorStepRatioProperty, value);
         }
 
         private static void OnRulerPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
