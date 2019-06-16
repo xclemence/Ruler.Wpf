@@ -25,6 +25,7 @@ namespace Ruler.Wpf
 
         public static readonly DependencyProperty StepColorProperty = DependencyProperty.Register(nameof(StepColor), typeof(Brush), typeof(RulerBase), new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black), OnChangedRulerUpdate));
         public static readonly DependencyProperty MinorStepRatioProperty = DependencyProperty.Register(nameof(MinorStepRatio), typeof(double), typeof(RulerBase), new FrameworkPropertyMetadata(0.33, OnChangedRulerUpdate));
+        public static readonly DependencyProperty DisplayZeroLineProperty = DependencyProperty.Register(nameof(DisplayZeroLine), typeof(bool), typeof(RulerBase), new FrameworkPropertyMetadata(false, OnChangedRulerUpdate));
 
         public static readonly DependencyProperty StepPropertiesProperty = DependencyProperty.Register(nameof(StepProperties), typeof(RulerStepProperties), typeof(RulerBase), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty SlaveStepPropertiesProperty = DependencyProperty.Register(nameof(SlaveStepProperties), typeof(RulerStepProperties), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
@@ -80,6 +81,12 @@ namespace Ruler.Wpf
             set => SetValue(MinorStepRatioProperty, value);
         }
 
+        public bool DisplayZeroLine
+        {
+            get => (bool)GetValue(DisplayZeroLineProperty);
+            set => SetValue(DisplayZeroLineProperty, value);
+        }
+
         public RulerStepProperties StepProperties
         {
             get => (RulerStepProperties)GetValue(StepPropertiesProperty);
@@ -101,7 +108,7 @@ namespace Ruler.Wpf
         public CultureInfo TextCulture
         {
             get => (CultureInfo)GetValue(TextCultureProperty);
-            set => SetValue(MinorStepRatioProperty, value);
+            set => SetValue(TextCultureProperty, value);
         }
 
         private static void OnRulerPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -22,7 +22,6 @@
                 <Setter Property="DockPanel.Dock" Value="Left"/>
                 <Setter Property="Width" Value="100"/>
             </Style>
-
         </ResourceDictionary>
 
     </Window.Resources>
@@ -53,6 +52,7 @@
         </ruler:Ruler>
 
         <ruler:Ruler Grid.Row="1"
+                     DisplayZeroLine="True"
                      VerticalAlignment="Stretch"
                      Position="Left"
                      MarkerControlReference="{Binding ElementName=mainView}"

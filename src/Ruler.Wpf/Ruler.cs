@@ -132,7 +132,8 @@ namespace Ruler.Wpf
             
             GenerateSubSteps(subPixelSize, 0);
 
-            FirstMajorStepControl.Children.Add(rulerPostionControl.CreateMajorLine(pixelStep));
+            var majorLinePosition = DisplayZeroLine ? 0 : pixelStep;
+            FirstMajorStepControl.Children.Add(rulerPostionControl.CreateMajorLine(majorLinePosition));
 
             rulerPostionControl.UpdateFirstStepControl(FirstMajorStepControl, pixelStep);
             rulerPostionControl.UpdateStepRepeaterControl(StepRepeaterControl, StepRepeaterBrush, pixelStep);
