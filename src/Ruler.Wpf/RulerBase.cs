@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -15,22 +16,50 @@ namespace Ruler.Wpf
 {
     public abstract class RulerBase : Control
     {
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(nameof(Position), typeof(RulerPosition), typeof(RulerBase), new FrameworkPropertyMetadata(RulerPosition.Top, OnRulerPositionChanged));
-        public static readonly DependencyProperty MarkerControlReferenceProperty = DependencyProperty.Register(nameof(MarkerControlReference), typeof(UIElement), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnMarkerControlReferenceChanged));
         public static readonly DependencyProperty MaxValueProperty = DependencyProperty.Register(nameof(MaxValue), typeof(double), typeof(RulerBase), new FrameworkPropertyMetadata(double.NaN, OnChangedRulerUpdate));
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(nameof(Position), typeof(RulerPosition), typeof(RulerBase), new FrameworkPropertyMetadata(RulerPosition.Top, OnRulerPositionChanged));
+        public static readonly DependencyProperty MajorStepValuesProperty = DependencyProperty.Register(nameof(MajorStepValues), typeof(IEnumerable<int>), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
         public static readonly DependencyProperty MinPixelSizeProperty = DependencyProperty.Register(nameof(MinPixelSize), typeof(int), typeof(RulerBase), new FrameworkPropertyMetadata(4, OnChangedRulerUpdate));
+        public static readonly DependencyProperty ValueStepTransformProperty = DependencyProperty.Register(nameof(ValueStepTransform), typeof(Func<double, double>), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
+        public static readonly DependencyProperty MarkerControlReferenceProperty = DependencyProperty.Register(nameof(MarkerControlReference), typeof(UIElement), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnMarkerControlReferenceChanged));
+
+        public static readonly DependencyProperty StepColorProperty = DependencyProperty.Register(nameof(StepColor), typeof(Brush), typeof(RulerBase), new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black), OnChangedRulerUpdate));
+        public static readonly DependencyProperty MinorStepRatioProperty = DependencyProperty.Register(nameof(MinorStepRatio), typeof(double), typeof(RulerBase), new FrameworkPropertyMetadata(0.33, OnChangedRulerUpdate));
+
         public static readonly DependencyProperty StepPropertiesProperty = DependencyProperty.Register(nameof(StepProperties), typeof(RulerStepProperties), typeof(RulerBase), new FrameworkPropertyMetadata(null));
         public static readonly DependencyProperty SlaveStepPropertiesProperty = DependencyProperty.Register(nameof(SlaveStepProperties), typeof(RulerStepProperties), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
-        public static readonly DependencyProperty StepColorProperty = DependencyProperty.Register(nameof(StepColor), typeof(Brush), typeof(RulerBase), new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Black), OnChangedRulerUpdate));
+
         public static readonly DependencyProperty TextFormatProperty = DependencyProperty.Register(nameof(TextFormat), typeof(string), typeof(RulerBase), new FrameworkPropertyMetadata("N0", OnChangedRulerUpdate));
-        public static readonly DependencyProperty MajorStepValuesProperty = DependencyProperty.Register(nameof(MajorStepValues), typeof(IEnumerable<int>), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
-        public static readonly DependencyProperty ValueStepTransformProperty = DependencyProperty.Register(nameof(ValueStepTransform), typeof(Func<double, double>), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
-        public static readonly DependencyProperty MinorStepRatioProperty = DependencyProperty.Register(nameof(MinorStepRatio), typeof(double), typeof(RulerBase), new FrameworkPropertyMetadata(0.33, OnChangedRulerUpdate));
-        
+        public static readonly DependencyProperty TextCultureProperty = DependencyProperty.Register(nameof(TextCulture), typeof(CultureInfo), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
+
+        public double MaxValue
+        {
+            get => (double)GetValue(MaxValueProperty);
+            set => SetValue(MaxValueProperty, value);
+        }
+
         public RulerPosition Position
         {
             get => (RulerPosition)GetValue(PositionProperty); 
             set => SetValue(PositionProperty, value);
+        }
+
+        public IEnumerable<int> MajorStepValues
+        {
+            get => (IEnumerable<int>)GetValue(MajorStepValuesProperty);
+            set => SetValue(MajorStepValuesProperty, value);
+        }
+
+        public int MinPixelSize
+        {
+            get => (int)GetValue(MinPixelSizeProperty);
+            set => SetValue(MinPixelSizeProperty, value);
+        }
+
+        public Func<double, double> ValueStepTransform
+        {
+            get => (Func<double, double>)GetValue(ValueStepTransformProperty);
+            set => SetValue(ValueStepTransformProperty, value);
         }
 
         public UIElement MarkerControlReference
@@ -39,16 +68,16 @@ namespace Ruler.Wpf
             set => SetValue(MarkerControlReferenceProperty, value);
         }
 
-        public double MaxValue
+        public Brush StepColor
         {
-            get => (double)GetValue(MaxValueProperty);
-            set => SetValue(MaxValueProperty, value);
+            get => (Brush)GetValue(StepColorProperty);
+            set => SetValue(StepColorProperty, value);
         }
 
-        public int MinPixelSize
+        public double MinorStepRatio
         {
-            get => (int)GetValue(MinPixelSizeProperty);
-            set => SetValue(MinPixelSizeProperty, value);
+            get => (double)GetValue(MinorStepRatioProperty);
+            set => SetValue(MinorStepRatioProperty, value);
         }
 
         public RulerStepProperties StepProperties
@@ -63,33 +92,15 @@ namespace Ruler.Wpf
             set => SetValue(SlaveStepPropertiesProperty, value);
         }
 
-        public Brush StepColor
-        {
-            get => (Brush)GetValue(StepColorProperty);
-            set => SetValue(StepColorProperty, value);
-        }
-
         public string TextFormat
         {
             get => (string)GetValue(TextFormatProperty);
             set => SetValue(TextFormatProperty, value);
         }
 
-        public IEnumerable<int> MajorStepValues
+        public CultureInfo TextCulture
         {
-            get => (IEnumerable<int>)GetValue(MajorStepValuesProperty);
-            set => SetValue(MajorStepValuesProperty, value);
-        }
-
-        public Func<double, double> ValueStepTransform
-        {
-            get => (Func<double, double>)GetValue(ValueStepTransformProperty);
-            set => SetValue(ValueStepTransformProperty, value);
-        }
-
-        public double MinorStepRatio
-        {
-            get => (double)GetValue(MinorStepRatioProperty);
+            get => (CultureInfo)GetValue(TextCultureProperty);
             set => SetValue(MinorStepRatioProperty, value);
         }
 

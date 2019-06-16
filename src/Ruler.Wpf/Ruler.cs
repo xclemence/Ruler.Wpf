@@ -144,7 +144,7 @@ namespace Ruler.Wpf
             {
                 offset = pixelStep * i;
 
-                if (offset + pixelStep <= rulerPostionControl.GetSize())
+                if (offset + pixelStep - subPixelSize <= rulerPostionControl.GetSize())
                     LabelsControl.Children.Add(rulerPostionControl.CreateText(i * valueStep, offset));
             }
         }

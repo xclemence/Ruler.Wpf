@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ruler="clr-namespace:Ruler.Wpf;assembly=Ruler.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" x:Name="mainView">
+        Title="MainWindow" Height="700" Width="800" x:Name="mainView">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -101,6 +101,42 @@
                              Foreground="White"
                              Background="Black"
                              TextFormat="N2"/>
+            </GroupBox>
+
+            <GroupBox Header="Cultures">
+                <GroupBox.Resources>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                        <Setter Property="DockPanel.Dock" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="Width" Value="50"/>
+                    </Style>
+
+                    <Style TargetType="DockPanel" >
+                        <Setter Property="Margin" Value="0 10"/>
+                    </Style>
+
+                    <Style TargetType="ruler:Ruler" BasedOn="{StaticResource {x:Type ruler:Ruler}}">
+                        <Setter Property="MaxValue" Value="100000"/>
+                        <Setter Property="MajorStepValues" Value="{Binding MajorStep}"/>
+                        <Setter Property="Margin" Value="10 0" />
+                        <Setter Property="Height" Value="25"/>
+                        <Setter Property="DockPanel.Dock" Value="Right"/>
+                    </Style>
+                </GroupBox.Resources>
+                <StackPanel>
+                    <DockPanel>
+                        <TextBlock Text="US"/>
+                        <ruler:Ruler TextCulture="{Binding CultureUs}" />
+                    </DockPanel>
+                    <DockPanel>
+                        <TextBlock Text="FR"/>
+                        <ruler:Ruler TextCulture="{Binding CultureFr}" />
+                    </DockPanel>
+                    <DockPanel>
+                        <TextBlock Text="Custom"/>
+                        <ruler:Ruler TextCulture="{Binding CultureCustom}" />
+                    </DockPanel>
+                </StackPanel>
             </GroupBox>
         </StackPanel>
     </Grid>

@@ -42,7 +42,7 @@ namespace Ruler.Wpf.PositionManagers
 
         public override TextBlock CreateText(double value, double offset)
         {
-            var text = GetTextBlock(value.ToString(Control.TextFormat, CultureInfo.CurrentCulture));
+            var text = GetTextBlock(value.ToString(Control.TextFormat, GetTextCulture()));
 
             text.SetValue(Canvas.LeftProperty, offset);
 

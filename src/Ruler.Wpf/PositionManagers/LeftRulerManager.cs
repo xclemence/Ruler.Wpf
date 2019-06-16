@@ -45,7 +45,7 @@ namespace Ruler.Wpf.PositionManagers
 
         public override TextBlock CreateText(double value, double offset)
         {
-            var text = value.ToString(Control.TextFormat, CultureInfo.CurrentCulture)
+            var text = value.ToString(Control.TextFormat, GetTextCulture())
                             .Select(x => x.ToString())
                             .Where(x => !string.IsNullOrWhiteSpace(x))
                             .Aggregate((x, y) => $"{x}{Environment.NewLine}{y}");

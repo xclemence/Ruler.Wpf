@@ -4,6 +4,7 @@
 // Ruler Wpf Version 2.0
 // 
 
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -46,5 +47,8 @@ namespace Ruler.Wpf.PositionManagers
         }
 
         protected virtual TextBlock GetTextBlock(string text) => new TextBlock { Text = text };
+
+        protected virtual CultureInfo GetTextCulture() => Control.TextCulture ?? CultureInfo.CurrentUICulture;
+
     }
 }
