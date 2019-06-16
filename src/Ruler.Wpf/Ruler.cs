@@ -112,7 +112,9 @@ namespace Ruler.Wpf
 
         public override void RefreshRuler() => updateSubject.OnNext(true);
         
-        private bool CanDrawRuler() => CanDrawSlaveMode() || CanDrawMasterMode();
+        private bool CanDrawRuler() => ValidateSize() && (CanDrawSlaveMode() || CanDrawMasterMode());
+
+        private bool ValidateSize() => ActualWidth > 0 && ActualHeight > 0;
 
         private bool CanDrawSlaveMode() => SlaveStepProperties != null;
         private bool CanDrawMasterMode() => (MajorStepValues != null && !double.IsNaN(MaxValue) && MaxValue > 0);
