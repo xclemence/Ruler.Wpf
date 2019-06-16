@@ -14,9 +14,7 @@ namespace Ruler.Wpf.PositionManagers
 {
     public class LeftRulerManager : VerticalRulerManager
     {
-        public LeftRulerManager(RulerBase control) : base(control)
-        {
-        }
+        public LeftRulerManager(RulerBase control) : base(control) { }
 
         public override Line CreateMajorLine(double offset)
         {

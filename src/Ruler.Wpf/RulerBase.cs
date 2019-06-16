@@ -51,7 +51,6 @@ namespace Ruler.Wpf
             set => SetValue(MinPixelSizeProperty, value);
         }
 
-
         public RulerStepProperties StepProperties
         {
             get => (RulerStepProperties)GetValue(StepPropertiesProperty);
@@ -75,7 +74,6 @@ namespace Ruler.Wpf
             get => (string)GetValue(TextFormatProperty);
             set => SetValue(TextFormatProperty, value);
         }
-
 
         public IEnumerable<int> MajorStepValues
         {

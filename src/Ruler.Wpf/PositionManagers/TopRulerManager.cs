@@ -12,9 +12,7 @@ namespace Ruler.Wpf.PositionManagers
 {
     public class TopRulerManager : HorizontalRulerManager
     {
-        public TopRulerManager(RulerBase control) : base(control)
-        {
-        }
+        public TopRulerManager(RulerBase control) : base(control) { }
 
         public override Line CreateMajorLine(double offset)
         {

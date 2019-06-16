@@ -45,10 +45,6 @@ namespace Ruler.Wpf.PositionManagers
             };
         }
 
-        protected virtual TextBlock GetTextBlock(string text)
-        {
-            return new TextBlock { Text = text };
-        }
-
+        protected virtual TextBlock GetTextBlock(string text) => new TextBlock { Text = text };
     }
 }

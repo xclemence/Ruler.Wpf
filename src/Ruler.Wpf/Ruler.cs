@@ -19,7 +19,11 @@ namespace Ruler.Wpf
 {
     public class Ruler : RulerBase
     {
-        private readonly Subject<int> updateSubject;
+        private const int SubStepNumber = 10;
+
+        private readonly TimeSpan RefreshDelay = TimeSpan.FromMilliseconds(10);
+
+        private readonly Subject<bool> updateSubject;
         private IDisposable updateSubcription;
         private RulerPositionManager rulerPostionControl;
         
@@ -32,7 +36,7 @@ namespace Ruler.Wpf
         public Ruler()
         {
 
-            updateSubject = new Subject<int>();
+            updateSubject = new Subject<bool>();
 
             UpdateRulerPosition(RulerPosition.Top);
 
@@ -52,7 +56,7 @@ namespace Ruler.Wpf
             SizeChanged += OnRulerSizeChanged;
             Unloaded += OnRulerUnloaded;
 
-            updateSubcription = updateSubject.Throttle(TimeSpan.FromMilliseconds(10))
+            updateSubcription = updateSubject.Throttle(RefreshDelay)
                                              .Subscribe(_ => Application.Current.Dispatcher.BeginInvoke(new Action(() => DrawRuler())));
             RefreshRuler();
         }
@@ -106,13 +110,12 @@ namespace Ruler.Wpf
 
         private void OnRulerSizeChanged(object sender, SizeChangedEventArgs e) => RefreshRuler();
 
-        public override void RefreshRuler()
-        {
-            updateSubject.OnNext(1);
-            //DrawhRuler();
-        }
+        public override void RefreshRuler() => updateSubject.OnNext(true);
         
-        private bool CanDrawRuler() => SlaveStepProperties != null || (MajorStepValues != null && !double.IsNaN(MaxValue) && MaxValue > 0);
+        private bool CanDrawRuler() => CanDrawSlaveMode() || CanDrawMasterMode();
+
+        private bool CanDrawSlaveMode() => SlaveStepProperties != null;
+        private bool CanDrawMasterMode() => (MajorStepValues != null && !double.IsNaN(MaxValue) && MaxValue > 0);
 
         private void DrawRuler()
         {
@@ -122,11 +125,11 @@ namespace Ruler.Wpf
 
             var stepNumber = Math.Ceiling(rulerPostionControl.GetSize() / pixelStep);
 
-            var subPixelSize = pixelStep / 10;
+            var subPixelSize = pixelStep / SubStepNumber;
 
             FirstMajorStepControl.Children.Clear();
             LabelsControl.Children.Clear();
-
+            
             GenerateSubSteps(subPixelSize, 0);
 
             FirstMajorStepControl.Children.Add(rulerPostionControl.CreateMajorLine(pixelStep));
@@ -169,19 +172,25 @@ namespace Ruler.Wpf
 
         private (double pixelStep, double valueStep) GetMajorStep()
         {
+            // find thes minimal position of first major step between 0 and 1
+            var normalizeMinSize = MinPixelSize * SubStepNumber / rulerPostionControl.GetSize();
 
-            var normalizeMinSize = MinPixelSize * 10 / rulerPostionControl.GetSize();
-
+            // calculate the real value of this step (min step value)
             var minStepValue = normalizeMinSize * MaxValue;
 
+            // calculate magnetude of min step value (power of ten)
             var minStepValueMagnitude = (int) Math.Floor(Math.Log10(minStepValue));
 
+            // normalise min step value between 0 and 10 (according to Major step value scale)
             var normalizeMinStepValue = minStepValue / Math.Pow(10, minStepValueMagnitude);
 
+            // select best step according values defined by customer
             var normalizeRealStepValue = MajorStepValues.Union(new int[] { 10 }).First(x => x > normalizeMinStepValue);
 
+            // apply magnitude to return inside  initial value scale
             var realStepValue = normalizeRealStepValue * Math.Pow(10, minStepValueMagnitude);
 
+            // find size of real value (pixel)
             var pixelStep = rulerPostionControl.GetSize() * realStepValue / MaxValue;
 
             return (pixelStep, valueStep: realStepValue);
@@ -191,7 +200,7 @@ namespace Ruler.Wpf
         {
             double subOffset;
 
-            for (var y = 1; y < 10; ++y)
+            for (var y = 1; y < SubStepNumber; ++y)
             {
                 subOffset = offset + y * subPixelSize;
 
