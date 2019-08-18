@@ -7,9 +7,16 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:Ruler}">
-                    <Grid >
-                        <Canvas x:Name="rulerSteps"/>
+                    <Grid Background="{TemplateBinding Background}" >
+                        <Canvas x:Name="firstMajorStepControl" Background="Transparent"/>
+                        <Canvas x:Name="labelsControl"/>
 
+                        <Rectangle  x:Name="stepRepeaterControl">
+                            <Rectangle.Fill>
+                                <VisualBrush x:Name="stepRepeaterBrush" ViewportUnits="Absolute" TileMode="Tile"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        
                         <Canvas Panel.ZIndex="1">
                             <Line Stroke="{TemplateBinding Foreground}" StrokeThickness="1" StrokeDashArray="3" Stretch="None" x:Name="marker" Visibility="Collapsed"/>
                         </Canvas>

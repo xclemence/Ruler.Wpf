@@ -1,5 +1,12 @@
-﻿using System;
+﻿//  
+// Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
+// Licensed under the MIT License. See LICENSE file in the project root for full license information. 
+// Ruler Wpf Version 2.0
+// 
+
+using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 
 namespace Ruler.Test
@@ -22,6 +29,10 @@ namespace Ruler.Test
 
         public Func<double, double> ValueStepTransform { get; }
 
+        public CultureInfo CultureUs { get; } = new CultureInfo("en-us");
+        public CultureInfo CultureFr { get; } = new CultureInfo("fr-fr");
+        public CultureInfo CultureCustom { get; } = CreateCustomCulture();
+
         public string Unit
         {
             get => unit;
@@ -34,6 +45,13 @@ namespace Ruler.Test
             }
         }
 
+        static private CultureInfo CreateCustomCulture()
+        {
+            var culture = CultureInfo.InvariantCulture.Clone() as CultureInfo;
+            culture.NumberFormat.NumberGroupSeparator = "X";
+
+            return culture;
+        }
 
         private double UpdateStepValues(double stepValue)
         {

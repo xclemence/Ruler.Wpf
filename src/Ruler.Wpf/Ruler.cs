@@ -1,10 +1,17 @@
-﻿using System;
+﻿//  
+// Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
+// Licensed under the MIT License. See LICENSE file in the project root for full license information. 
+// Ruler Wpf Version 2.0
+// 
+
+using System;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Ruler.Wpf.PositionManagers;
 
@@ -12,16 +19,24 @@ namespace Ruler.Wpf
 {
     public class Ruler : RulerBase
     {
-        private readonly Subject<int> updateSubject;
+        private const int SubStepNumber = 10;
+
+        private readonly TimeSpan RefreshDelay = TimeSpan.FromMilliseconds(10);
+
+        private readonly Subject<bool> updateSubject;
         private IDisposable updateSubcription;
         private RulerPositionManager rulerPostionControl;
+        
         private Line marker;
-        private Canvas rulerSteps;
+        private Canvas firstMajorStepControl;
+        private Canvas labelsControl;
+        private Rectangle stepRepeaterControl;
+        private VisualBrush stepRepeaterBrush;
 
         public Ruler()
         {
 
-            updateSubject = new Subject<int>();
+            updateSubject = new Subject<bool>();
 
             UpdateRulerPosition(RulerPosition.Top);
 
@@ -29,7 +44,10 @@ namespace Ruler.Wpf
         }
 
         private Line Marker => marker ?? (marker = Template.FindName("marker", this) as Line);
-        private Canvas RulerSteps => rulerSteps ?? (rulerSteps = Template.FindName("rulerSteps", this) as Canvas);
+        private Canvas FirstMajorStepControl => firstMajorStepControl ?? (firstMajorStepControl = Template.FindName("firstMajorStepControl", this) as Canvas);
+        private Rectangle StepRepeaterControl => stepRepeaterControl ?? (stepRepeaterControl = Template.FindName("stepRepeaterControl", this) as Rectangle);
+        private VisualBrush StepRepeaterBrush => stepRepeaterBrush ?? (stepRepeaterBrush = Template.FindName("stepRepeaterBrush", this) as VisualBrush);
+        private Canvas LabelsControl => labelsControl ?? (labelsControl = Template.FindName("labelsControl", this) as Canvas);
 
         private void OnRulerLoaded(object sender, RoutedEventArgs e)
         {
@@ -38,7 +56,7 @@ namespace Ruler.Wpf
             SizeChanged += OnRulerSizeChanged;
             Unloaded += OnRulerUnloaded;
 
-            updateSubcription = updateSubject.Throttle(TimeSpan.FromMilliseconds(10))
+            updateSubcription = updateSubject.Throttle(RefreshDelay)
                                              .Subscribe(_ => Application.Current.Dispatcher.BeginInvoke(new Action(() => DrawRuler())));
             RefreshRuler();
         }
@@ -85,6 +103,9 @@ namespace Ruler.Wpf
 
         private void UpdateMarkerPosition(Point point)
         {
+            if (Marker == null || rulerPostionControl == null)
+                return;
+
             var positionUpdated = rulerPostionControl.UpdateMakerPosition(Marker, point);
 
             Marker.Visibility = positionUpdated ? Visibility.Visible : Visibility.Collapsed;
@@ -92,13 +113,14 @@ namespace Ruler.Wpf
 
         private void OnRulerSizeChanged(object sender, SizeChangedEventArgs e) => RefreshRuler();
 
-        public override void RefreshRuler()
-        {
-            updateSubject.OnNext(1);
-            //DrawhRuler();
-        }
+        public override void RefreshRuler() => updateSubject.OnNext(true);
         
-        private bool CanDrawRuler() => SlaveStepProperties != null || (MajorStepValues != null && !double.IsNaN(MaxValue) && MaxValue > 0);
+        private bool CanDrawRuler() => ValidateSize() && (CanDrawSlaveMode() || CanDrawMasterMode());
+
+        private bool ValidateSize() => ActualWidth > 0 && ActualHeight > 0;
+
+        private bool CanDrawSlaveMode() => SlaveStepProperties != null;
+        private bool CanDrawMasterMode() => (MajorStepValues != null && !double.IsNaN(MaxValue) && MaxValue > 0);
 
         private void DrawRuler()
         {
@@ -108,24 +130,30 @@ namespace Ruler.Wpf
 
             var stepNumber = Math.Ceiling(rulerPostionControl.GetSize() / pixelStep);
 
-            var subPixelSize = pixelStep / 10;
+            var subPixelSize = pixelStep / SubStepNumber;
 
-            RulerSteps.Children.Clear();
+            FirstMajorStepControl.Children.Clear();
+            LabelsControl.Children.Clear();
+            
+            GenerateSubSteps(subPixelSize, 0);
+
+            var majorLinePosition = DisplayZeroLine ? 0 : pixelStep;
+            FirstMajorStepControl.Children.Add(rulerPostionControl.CreateMajorLine(majorLinePosition));
+
+            rulerPostionControl.UpdateFirstStepControl(FirstMajorStepControl, pixelStep);
+            rulerPostionControl.UpdateStepRepeaterControl(StepRepeaterControl, StepRepeaterBrush, pixelStep);
+
+            StepRepeaterBrush.Visual = FirstMajorStepControl;
 
             double offset;
+            double offsetToCheckDisplay;
             for (int i = 0; i < stepNumber; ++i)
             {
                 offset = pixelStep * i;
+                offsetToCheckDisplay = TextOverflow == RulerTextOverflow.Hidden ? offset + pixelStep - subPixelSize : offset;
 
-                if (offset > rulerPostionControl.GetSize())
-                    continue;
-
-                RulerSteps.Children.Add(rulerPostionControl.CreateMajorLine(offset));
-
-                if (offset + pixelStep <= rulerPostionControl.GetSize())
-                    RulerSteps.Children.Add(rulerPostionControl.CreateText(i * valueStep, offset));
-
-                GenerateSubSteps(subPixelSize, offset);
+                if (offsetToCheckDisplay <= rulerPostionControl.GetSize())
+                    LabelsControl.Children.Add(rulerPostionControl.CreateText(i * valueStep, offset));
             }
         }
 
@@ -152,19 +180,25 @@ namespace Ruler.Wpf
 
         private (double pixelStep, double valueStep) GetMajorStep()
         {
+            // find thes minimal position of first major step between 0 and 1
+            var normalizeMinSize = MinPixelSize * SubStepNumber / rulerPostionControl.GetSize();
 
-            var normalizeMinSize = MinPixelSize * 10 / rulerPostionControl.GetSize();
-
+            // calculate the real value of this step (min step value)
             var minStepValue = normalizeMinSize * MaxValue;
 
+            // calculate magnetude of min step value (power of ten)
             var minStepValueMagnitude = (int) Math.Floor(Math.Log10(minStepValue));
 
+            // normalise min step value between 0 and 10 (according to Major step value scale)
             var normalizeMinStepValue = minStepValue / Math.Pow(10, minStepValueMagnitude);
 
+            // select best step according values defined by customer
             var normalizeRealStepValue = MajorStepValues.Union(new int[] { 10 }).First(x => x > normalizeMinStepValue);
 
+            // apply magnitude to return inside  initial value scale
             var realStepValue = normalizeRealStepValue * Math.Pow(10, minStepValueMagnitude);
 
+            // find size of real value (pixel)
             var pixelStep = rulerPostionControl.GetSize() * realStepValue / MaxValue;
 
             return (pixelStep, valueStep: realStepValue);
@@ -174,14 +208,14 @@ namespace Ruler.Wpf
         {
             double subOffset;
 
-            for (var y = 1; y < 10; ++y)
+            for (var y = 1; y < SubStepNumber; ++y)
             {
                 subOffset = offset + y * subPixelSize;
 
                 if (subOffset > rulerPostionControl.GetSize())
                     continue;
 
-                RulerSteps.Children.Add(rulerPostionControl.CreateMinorLine(subOffset));
+                FirstMajorStepControl.Children.Add(rulerPostionControl.CreateMinorLine(subOffset));
             }
         }
 

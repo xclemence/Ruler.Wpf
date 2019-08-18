@@ -1,4 +1,10 @@
-﻿using System.Globalization;
+﻿//  
+// Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
+// Licensed under the MIT License. See LICENSE file in the project root for full license information. 
+// Ruler Wpf Version 2.0
+// 
+
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -27,6 +33,9 @@ namespace Ruler.Wpf.PositionManagers
 
         public abstract bool UpdateMakerPosition(Line marker, Point position);
 
+        public abstract void UpdateFirstStepControl(Canvas control, double stepSize);
+        public abstract void UpdateStepRepeaterControl(Rectangle control, VisualBrush brush, double stepSize);
+
         protected virtual Line GetBaseLine() 
         {
             return new Line
@@ -37,9 +46,9 @@ namespace Ruler.Wpf.PositionManagers
             };
         }
 
-        protected virtual TextBlock GetTextBlock(string text)
-        {
-            return new TextBlock { Text = text };
-        }
+        protected virtual TextBlock GetTextBlock(string text) => new TextBlock { Text = text };
+
+        protected virtual CultureInfo GetTextCulture() => Control.TextCulture ?? CultureInfo.CurrentUICulture;
+
     }
 }

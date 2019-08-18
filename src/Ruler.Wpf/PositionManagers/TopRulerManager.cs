@@ -1,4 +1,10 @@
-﻿using System.Globalization;
+﻿//  
+// Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
+// Licensed under the MIT License. See LICENSE file in the project root for full license information. 
+// Ruler Wpf Version 2.0
+// 
+
+using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
@@ -6,9 +12,7 @@ namespace Ruler.Wpf.PositionManagers
 {
     public class TopRulerManager : HorizontalRulerManager
     {
-        public TopRulerManager(RulerBase control) : base(control)
-        {
-        }
+        public TopRulerManager(RulerBase control) : base(control) { }
 
         public override Line CreateMajorLine(double offset)
         {
@@ -28,7 +32,7 @@ namespace Ruler.Wpf.PositionManagers
             var line = GetBaseLine();
 
             line.X1 = offset;
-            line.Y1 = GetHeight() * 2 / 3;
+            line.Y1 = GetHeight() * (1 - Control.MinorStepRatio);
             
             line.X2 = offset;
             line.Y2 = GetHeight();
@@ -38,7 +42,7 @@ namespace Ruler.Wpf.PositionManagers
 
         public override TextBlock CreateText(double value, double offset)
         {
-            var text = GetTextBlock(value.ToString(Control.TextFormat, CultureInfo.CurrentCulture));
+            var text = GetTextBlock(value.ToString(Control.TextFormat, GetTextCulture()));
 
             text.SetValue(Canvas.LeftProperty, offset);
 
