@@ -103,6 +103,9 @@ namespace Ruler.Wpf
 
         private void UpdateMarkerPosition(Point point)
         {
+            if (Marker == null || rulerPostionControl == null)
+                return;
+
             var positionUpdated = rulerPostionControl.UpdateMakerPosition(Marker, point);
 
             Marker.Visibility = positionUpdated ? Visibility.Visible : Visibility.Collapsed;
@@ -143,11 +146,13 @@ namespace Ruler.Wpf
             StepRepeaterBrush.Visual = FirstMajorStepControl;
 
             double offset;
+            double offsetToCheckDisplay;
             for (int i = 0; i < stepNumber; ++i)
             {
                 offset = pixelStep * i;
+                offsetToCheckDisplay = TextOverflow == RulerTextOverflow.Hidden ? offset + pixelStep - subPixelSize : offset;
 
-                if (offset + pixelStep - subPixelSize <= rulerPostionControl.GetSize())
+                if (offsetToCheckDisplay <= rulerPostionControl.GetSize())
                     LabelsControl.Children.Add(rulerPostionControl.CreateText(i * valueStep, offset));
             }
         }

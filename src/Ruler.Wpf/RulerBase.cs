@@ -32,6 +32,7 @@ namespace Ruler.Wpf
 
         public static readonly DependencyProperty TextFormatProperty = DependencyProperty.Register(nameof(TextFormat), typeof(string), typeof(RulerBase), new FrameworkPropertyMetadata("N0", OnChangedRulerUpdate));
         public static readonly DependencyProperty TextCultureProperty = DependencyProperty.Register(nameof(TextCulture), typeof(CultureInfo), typeof(RulerBase), new FrameworkPropertyMetadata(null, OnChangedRulerUpdate));
+        public static readonly DependencyProperty TextOverflowProperty = DependencyProperty.Register(nameof(TextOverflow), typeof(RulerTextOverflow), typeof(RulerBase), new FrameworkPropertyMetadata(RulerTextOverflow.Visible, OnChangedRulerUpdate));
 
         public double MaxValue
         {
@@ -109,6 +110,12 @@ namespace Ruler.Wpf
         {
             get => (CultureInfo)GetValue(TextCultureProperty);
             set => SetValue(TextCultureProperty, value);
+        }
+
+        public RulerTextOverflow TextOverflow
+        {
+            get => (RulerTextOverflow)GetValue(TextOverflowProperty);
+            set => SetValue(TextOverflowProperty, value);
         }
 
         private static void OnRulerPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
