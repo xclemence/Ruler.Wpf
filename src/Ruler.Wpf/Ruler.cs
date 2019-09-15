@@ -17,13 +17,13 @@ using Ruler.Wpf.PositionManagers;
 
 namespace Ruler.Wpf
 {
-    public class Ruler : RulerBase
+    public class Ruler : RulerBase, IDisposable
     {
         private const int SubStepNumber = 10;
 
         private readonly TimeSpan RefreshDelay = TimeSpan.FromMilliseconds(10);
 
-        private readonly Subject<bool> updateSubject;
+        private Subject<bool> updateSubject;
         private IDisposable updateSubcription;
         private RulerPositionManager rulerPostionControl;
         
@@ -33,11 +33,10 @@ namespace Ruler.Wpf
         private Rectangle stepRepeaterControl;
         private VisualBrush stepRepeaterBrush;
 
+        private bool isLoadedInternal;
+
         public Ruler()
         {
-
-            updateSubject = new Subject<bool>();
-
             UpdateRulerPosition(RulerPosition.Top);
 
             Loaded += OnRulerLoaded;
@@ -55,22 +54,16 @@ namespace Ruler.Wpf
 
             SizeChanged += OnRulerSizeChanged;
             Unloaded += OnRulerUnloaded;
-
+            
+            updateSubject = new Subject<bool>();
             updateSubcription = updateSubject.Throttle(RefreshDelay)
                                              .Subscribe(_ => Application.Current.Dispatcher.BeginInvoke(new Action(() => DrawRuler())));
+
+            isLoadedInternal = true;
             RefreshRuler();
         }
 
-        private void OnRulerUnloaded(object sender, RoutedEventArgs e)
-        {
-            SizeChanged -= OnRulerSizeChanged;
-            Unloaded -= OnRulerUnloaded;
-
-            if (MarkerControlReference != null)
-                MarkerControlReference.MouseMove -= OnExternalMouseMouve;
-
-            updateSubcription.Dispose();
-        }
+        private void OnRulerUnloaded(object sender, RoutedEventArgs e) => UnloadControl();
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -113,7 +106,7 @@ namespace Ruler.Wpf
 
         private void OnRulerSizeChanged(object sender, SizeChangedEventArgs e) => RefreshRuler();
 
-        public override void RefreshRuler() => updateSubject.OnNext(true);
+        public override void RefreshRuler() => updateSubject?.OnNext(true);
         
         private bool CanDrawRuler() => ValidateSize() && (CanDrawSlaveMode() || CanDrawMasterMode());
 
@@ -227,6 +220,22 @@ namespace Ruler.Wpf
             if (newControl != null)
                 newControl.MouseMove += OnExternalMouseMouve;
         }
+
+        private void UnloadControl()
+        {
+            if (isLoadedInternal)
+            {
+                if (MarkerControlReference != null)
+                    MarkerControlReference.MouseMove -= OnExternalMouseMouve;
+
+                updateSubcription?.Dispose();
+                updateSubject?.Dispose();
+
+                isLoadedInternal = false;
+            }
+        }
+
+        public void Dispose() => UnloadControl();
     }
 }
 
