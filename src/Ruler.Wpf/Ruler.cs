@@ -230,6 +230,7 @@ namespace Ruler.Wpf
 
                 updateSubcription?.Dispose();
                 updateSubject?.Dispose();
+                updateSubject = null;
 
                 isLoadedInternal = false;
             }
