@@ -4,7 +4,6 @@
 // Ruler Wpf Version 2.0
 // 
 
-using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 

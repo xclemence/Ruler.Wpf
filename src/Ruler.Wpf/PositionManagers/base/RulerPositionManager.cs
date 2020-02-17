@@ -20,7 +20,6 @@ namespace Ruler.Wpf.PositionManagers
 
     public abstract class RulerPositionManager
     {
-
         public RulerPositionManager(RulerBase control) => Control = control;
 
         public RulerBase Control { get; private set; }
