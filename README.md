@@ -3,13 +3,15 @@
 
 In WPF world, many controls exists, but it difficult to find a ruler. This project proposes a simple ruler usable in all Net Core 3.1 and Net Framework 4.7.2.
 
-### Focused objectifs
+<img src="doc/images/ruler-base.png"/>
+
+## Focused objectifs
 - Performance
 - Simplicity
 - Customisation
 - Maintenability
 
-### Features
+## Features
 Features available in control are:
 - Definition of custom main step for scale
 - Dynamic scale on resize
@@ -19,6 +21,37 @@ Features available in control are:
 - Multi cultures
 - Multi scale units
 - Styling sample
+- MVVM pattern
+
+## Getting started
+
+Add the resource dictionary inside application ressources
+
+```xml
+<ResourceDictionary>
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="pack://application:,,,/Ruler.Wpf;component/RulerStyle.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>
+``` 
+
+Use control as you need
+
+```xml
+<ruler:Ruler MarkerControlReference="{Binding ElementName=mainView}"
+             MaxValue="400"
+             MajorStepValues="{Binding MajorStep}"
+             ValueStepTransform="{Binding ValueStepTransform}">
+    <ruler:Ruler.Resources>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="Margin" Value="5 0"/>
+        </Style>
+    </ruler:Ruler.Resources>
+</ruler:Ruler
+``` 
+
 
 ### Testabilty
-A Wpf net Core application show how to used ruler.
+A Wpf Net Core application show how to used ruler.
+
+<img src="doc/images/ruler-testapp.png"/>
