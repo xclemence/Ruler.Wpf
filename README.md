@@ -16,7 +16,7 @@ Features available in control are:
 - Definition of custom main step for scale
 - Dynamic scale on resize
 - Horizontal and vertical support (top and left position)
-- Mark link to mouse potion
+- Mark linked to mouse position
 - Multi ruler synchronization
 - Multi cultures
 - Multi scale units
