@@ -83,11 +83,10 @@ namespace Ruler.Wpf
 
         protected override void UpdateRulerPosition(RulerPosition position)
         {
-            rulerPostionControl = position switch
-            {
-                RulerPosition.Left => new LeftRulerManager(this),
-                _ => new TopRulerManager(this),
-            };
+            if(position == RulerPosition.Left)
+                rulerPostionControl =  new LeftRulerManager(this);
+            else
+                rulerPostionControl = new TopRulerManager(this);
         }
 
         private void UpdateMarkerPosition(Point point)

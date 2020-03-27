@@ -35,15 +35,12 @@ namespace Ruler.Wpf.PositionManagers
         public abstract void UpdateFirstStepControl(Canvas control, double stepSize);
         public abstract void UpdateStepRepeaterControl(Rectangle control, VisualBrush brush, double stepSize);
 
-        protected virtual Line GetBaseLine() 
+        protected virtual Line GetBaseLine() => new Line
         {
-            return new Line
-            {
-                Stroke = Control.StepColor,
-                StrokeThickness = 1,
-                Stretch = Stretch.None,
-            };
-        }
+            Stroke = Control.StepColor,
+            StrokeThickness = 1,
+            Stretch = Stretch.None,
+        };
 
         protected virtual TextBlock GetTextBlock(string text) => new TextBlock { Text = text };
 

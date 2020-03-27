@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ruler="clr-namespace:Ruler.Wpf;assembly=Ruler.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="800" x:Name="mainView">
+        Title="Ruler Tests" Height="700" Width="800" x:Name="mainView">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
