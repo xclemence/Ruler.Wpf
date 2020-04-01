@@ -1,5 +1,6 @@
 # Ruler.Wpf
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![.NET Core](https://github.com/xclemence/Ruler.Wpf/workflows/.NET%20Core/badge.svg)
 
 In WPF world, many controls exists, but it difficult to find a ruler. This project proposes a simple ruler usable in all Net Core 3.1 and Net Framework 4.7.2.
 
