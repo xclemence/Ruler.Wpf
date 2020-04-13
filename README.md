@@ -2,15 +2,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![.NET Core](https://github.com/xclemence/Ruler.Wpf/workflows/.NET%20Core/badge.svg)
 
-In WPF world, many controls exists, but it difficult to find a ruler. This project proposes a simple ruler usable in all Net Core 3.1 and Net Framework 4.7.2.
+In the WPF world, many controls exist, but it difficult to find a ruler. This project proposes a simple ruler usable in all Net Core 3.1 and Net Framework 4.7.2.
 
 <img src="doc/images/ruler-base.png"/>
 
 ## Focused objectifs
 - Performance
 - Simplicity
-- Customisation
-- Maintenability
+- Customization
+- Maintainability
 
 ## Features
 Features available in control are:
@@ -20,13 +20,13 @@ Features available in control are:
 - Mark linked to mouse position
 - Multi ruler synchronization
 - Multi cultures
-- Multi scale units
+- Multiscale units
 - Styling sample
 - MVVM pattern
 
 ## Getting started
 
-Add the resource dictionary inside application ressources
+Add the resource dictionary inside application resources:
 
 ```xml
 <ResourceDictionary>
@@ -53,6 +53,6 @@ Use control as you need
 
 
 ### Testabilty
-A Wpf Net Core application show how to used ruler.
+A WPF Net Core application shows how to use the ruler.
 
 <img src="doc/images/ruler-testapp.png"/>
