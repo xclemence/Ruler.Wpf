@@ -21,5 +21,3 @@ jobs:
       run: dotnet restore src/Ruler.Wpf.sln
     - name: Build
       run: dotnet build src/Ruler.Wpf.sln --configuration Release --no-restore
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v1.1

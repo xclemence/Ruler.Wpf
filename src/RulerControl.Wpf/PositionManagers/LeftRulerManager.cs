@@ -58,5 +58,4 @@ namespace RulerControl.Wpf.PositionManagers
             return textBlock;
         }
     }
-
 }
