@@ -1,10 +1,11 @@
 ﻿//  
 // Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
 // Licensed under the MIT License. See LICENSE file in the project root for full license information. 
-// Ruler Wpf Version 2.0
+// Ruler Wpf Version 3.0
 // 
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -13,17 +14,22 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Ruler.Wpf.PositionManagers;
+using RulerControl.Wpf.PositionManagers;
 
-namespace Ruler.Wpf
+namespace RulerControl.Wpf
 {
+    [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "updateSubject", Justification ="Managed by unload method")]
+    [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "updateSubcription", Justification = "Managed by unload method")]
     public class Ruler : RulerBase, IDisposable
     {
         private const int SubStepNumber = 10;
 
         private readonly TimeSpan RefreshDelay = TimeSpan.FromMilliseconds(10);
 
+        private bool disposedValue;
+
         private Subject<bool> updateSubject;
+
         private IDisposable updateSubcription;
         private RulerPositionManager rulerPostionControl;
         
@@ -68,6 +74,8 @@ namespace Ruler.Wpf
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
+
+            if (e == null) return;
 
             var mousePosition = e.GetPosition(this);
 
@@ -231,7 +239,27 @@ namespace Ruler.Wpf
             }
         }
 
-        public void Dispose() => UnloadControl();
+        #region IDisposable Support
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                    UnloadControl();
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
+
     }
 }
 

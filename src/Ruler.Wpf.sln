@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ruler.Wpf", "Ruler.Wpf\Ruler.Wpf.csproj", "{C5040161-9EDA-446F-B3D1-4BA569FF2908}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RulerControl.Wpf", "RulerControl.Wpf\RulerControl.Wpf.csproj", "{C5040161-9EDA-446F-B3D1-4BA569FF2908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ruler.Test", "Ruler.Test\Ruler.Test.csproj", "{14A13605-8CB2-4D4E-B8EC-EF59FA467DB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RulerControl.Test", "RulerControl.Test\RulerControl.Test.csproj", "{14A13605-8CB2-4D4E-B8EC-EF59FA467DB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,15 +1,16 @@
 ﻿//  
 // Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
 // Licensed under the MIT License. See LICENSE file in the project root for full license information. 
-// Ruler Wpf Version 2.0
+// Ruler Wpf Version 3.0
 // 
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 
-namespace Ruler.Test
+namespace RulerControl.Test
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
@@ -25,7 +26,7 @@ namespace Ruler.Test
             DataContext = this;
         }
 
-        public int[] MajorStep { get; } = { 1, 2, 5 };
+        public IEnumerable<int> MajorStep { get; } = new [] { 1, 2, 5 };
 
         public Func<double, double> ValueStepTransform { get; }
 

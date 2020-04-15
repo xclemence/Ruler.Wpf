@@ -1,15 +1,15 @@
-﻿<Window x:Class="Ruler.Test.MainWindow"
+﻿<Window x:Class="RulerControl.Test.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ruler="clr-namespace:Ruler.Wpf;assembly=Ruler.Wpf"
+        xmlns:rulerControl="clr-namespace:RulerControl.Wpf;assembly=RulerControl.Wpf"
         mc:Ignorable="d"
         Title="Ruler Tests" Height="700" Width="800" x:Name="mainView">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/Ruler.Wpf;component/RulerStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/RulerControl.Wpf;component/RulerStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="GroupBox" BasedOn="{StaticResource {x:Type GroupBox}}">
@@ -36,7 +36,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ruler:Ruler x:Name="topRuler"
+        <rulerControl:Ruler x:Name="topRuler"
                      Grid.Column="1"
                      VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch" 
@@ -44,14 +44,14 @@
                      MaxValue="{Binding ElementName=maxTopValueSlider, Path=Value, Delay=5}"
                      MajorStepValues="{Binding MajorStep}"
                      ValueStepTransform="{Binding ValueStepTransform}">
-            <ruler:Ruler.Resources>
+            <rulerControl:Ruler.Resources>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                     <Setter Property="Margin" Value="5 0"/>
                 </Style>
-            </ruler:Ruler.Resources>
-        </ruler:Ruler>
+            </rulerControl:Ruler.Resources>
+        </rulerControl:Ruler>
 
-        <ruler:Ruler Grid.Row="1"
+        <rulerControl:Ruler Grid.Row="1"
                      DisplayZeroLine="True"
                      VerticalAlignment="Stretch"
                      Position="Left"
@@ -59,7 +59,7 @@
                      MaxValue="{Binding ElementName=maxLeftValueSlider, Path=Value, Delay=5}"
                      MinorStepRatio="0.1"
                      MajorStepValues="{Binding MajorStep}">
-            <ruler:Ruler.Resources>
+            <rulerControl:Ruler.Resources>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                     <Setter Property="Foreground" Value="Blue"/>
                     <Setter Property="LineHeight" Value="12"/>
@@ -67,8 +67,8 @@
                     <Setter Property="Margin" Value="2 5"/>
                     <Setter Property="FontSize" Value="10"/>
                 </Style>
-            </ruler:Ruler.Resources>
-        </ruler:Ruler>
+            </rulerControl:Ruler.Resources>
+        </rulerControl:Ruler>
 
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="10" HorizontalAlignment="Stretch">
             <GroupBox Header="Reference ">
@@ -95,7 +95,7 @@
                 </DockPanel>
             </GroupBox>
             <GroupBox Header="Slave">
-                <ruler:Ruler SlaveStepProperties="{Binding ElementName=topRuler, Path=StepProperties, Delay=5}" 
+                <rulerControl:Ruler SlaveStepProperties="{Binding ElementName=topRuler, Path=StepProperties, Delay=5}" 
                              Margin="40 0" Height="40" 
                              StepColor="Orange"
                              Foreground="White"
@@ -115,7 +115,7 @@
                         <Setter Property="Margin" Value="0 10"/>
                     </Style>
 
-                    <Style TargetType="ruler:Ruler" BasedOn="{StaticResource {x:Type ruler:Ruler}}">
+                    <Style TargetType="rulerControl:Ruler" BasedOn="{StaticResource {x:Type rulerControl:Ruler}}">
                         <Setter Property="MaxValue" Value="100000"/>
                         <Setter Property="MajorStepValues" Value="{Binding MajorStep}"/>
                         <Setter Property="Margin" Value="10 0" />
@@ -126,15 +126,15 @@
                 <StackPanel>
                     <DockPanel>
                         <TextBlock Text="US"/>
-                        <ruler:Ruler TextCulture="{Binding CultureUs}" />
+                        <rulerControl:Ruler TextCulture="{Binding CultureUs}" />
                     </DockPanel>
                     <DockPanel>
                         <TextBlock Text="FR"/>
-                        <ruler:Ruler TextCulture="{Binding CultureFr}" />
+                        <rulerControl:Ruler TextCulture="{Binding CultureFr}" />
                     </DockPanel>
                     <DockPanel>
                         <TextBlock Text="Custom"/>
-                        <ruler:Ruler TextCulture="{Binding CultureCustom}" />
+                        <rulerControl:Ruler TextCulture="{Binding CultureCustom}" />
                     </DockPanel>
                 </StackPanel>
             </GroupBox>

@@ -9,4 +9,12 @@
     <Copyright>Copyright 2019 Xavier CLEMENCE</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <SkipDefaultEditorConfigAsAdditionalFile>true</SkipDefaultEditorConfigAsAdditionalFile>
+  </PropertyGroup>
+  <ItemGroup >
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\.editorconfig" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,7 @@
 ﻿//  
 // Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
 // Licensed under the MIT License. See LICENSE file in the project root for full license information. 
-// Ruler Wpf Version 2.0
+// Ruler Wpf Version 3.0
 // 
 
 using System;
@@ -10,9 +10,9 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ruler.Wpf.PositionManagers;
+using RulerControl.Wpf.PositionManagers;
 
-namespace Ruler.Wpf
+namespace RulerControl.Wpf
 {
     public abstract class RulerBase : Control
     {

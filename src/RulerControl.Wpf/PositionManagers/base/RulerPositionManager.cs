@@ -1,7 +1,7 @@
 ﻿//  
 // Copyright (c) Xavier CLEMENCE (xavier.clemence@gmail.com). All rights reserved.  
 // Licensed under the MIT License. See LICENSE file in the project root for full license information. 
-// Ruler Wpf Version 2.0
+// Ruler Wpf Version 3.0
 // 
 
 using System.Globalization;
@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace Ruler.Wpf.PositionManagers
+namespace RulerControl.Wpf.PositionManagers
 {
     public enum RulerPosition
     {
@@ -30,10 +30,32 @@ namespace Ruler.Wpf.PositionManagers
         public abstract double GetSize();
         public abstract double GetHeight();
 
-        public abstract bool UpdateMakerPosition(Line marker, Point position);
+        public bool UpdateMakerPosition(Line marker, Point position)
+        {
+            if (marker == null) return false;
 
-        public abstract void UpdateFirstStepControl(Canvas control, double stepSize);
-        public abstract void UpdateStepRepeaterControl(Rectangle control, VisualBrush brush, double stepSize);
+            return OnUpdateMakerPosition(marker, position);
+        }
+
+
+        public void UpdateFirstStepControl(Canvas control, double stepSize)
+        {
+            if (control == null) return;
+
+            OnUpdateFirstStepControl(control, stepSize);
+        }
+
+        public void UpdateStepRepeaterControl(Rectangle control, VisualBrush brush, double stepSize)
+        {
+            if (control == null) return;
+            if (brush == null) return;
+
+            OnUpdateStepRepeaterControl(control, brush, stepSize);
+        }
+
+        protected abstract bool OnUpdateMakerPosition(Line marker, Point position);
+        protected abstract void OnUpdateStepRepeaterControl(Rectangle control, VisualBrush brush, double stepSize);
+        protected abstract void OnUpdateFirstStepControl(Canvas control, double stepSize);
 
         protected virtual Line GetBaseLine() => new Line
         {
