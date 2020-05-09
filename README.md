@@ -1,6 +1,6 @@
 # Ruler.Wpf
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![.NET Core](https://github.com/xclemence/Ruler.Wpf/workflows/.NET%20Core/badge.svg)
+[![.NET Core][github-actions-badge]][github-actions]
 
 In the WPF world, many controls exist, but it difficult to find a ruler. This project proposes a simple ruler usable in all Net Core 3.1 and Net Framework 4.7.2.
 
@@ -56,3 +56,6 @@ Use control as you need
 A WPF Net Core application shows how to use the ruler.
 
 <img src="doc/images/ruler-testapp.png"/>
+
+[github-actions]:                  https://github.com/xclemence/Ruler.Wpf/actions?query=workflow%3A".NET+Core"
+[github-actions-badge]:            https://github.com/xclemence/Ruler.Wpf/workflows/.NET%20Core/badge.svg?branch=master
