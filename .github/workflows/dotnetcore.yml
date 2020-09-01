@@ -25,8 +25,8 @@ jobs:
     - name: Install dependencies
       run: dotnet restore Ruler.Wpf.sln
       working-directory: src
-
-    run: |
+    - name: start sonar scanner
+      run: |
         dotnet sonarscanner begin /o:xclemence \
         /k:xclemence_Ruler.Wpf \
         /d:sonar.host.url=https://sonarcloud.io
