@@ -27,12 +27,10 @@ jobs:
       working-directory: src
     - name: start sonar scanner
       run: |
-        dotnet sonarscanner begin /o:xclemence \
-        /k:xclemence_Ruler.Wpf \
+        dotnet sonarscanner begin /o:xclemence ^
+        /k:xclemence_Ruler.Wpf ^
         /d:sonar.host.url=https://sonarcloud.io
       working-directory: src
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - name: Build
       run: dotnet build Ruler.Wpf.sln --configuration Release --no-restore
