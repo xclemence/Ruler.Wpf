@@ -17,7 +17,28 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
+
+    - name: Install sonar scanner
+      run: dotnet tool install --global dotnet-sonarscanner --version 4.10.0
+      working-directory: src
+
     - name: Install dependencies
-      run: dotnet restore src/Ruler.Wpf.sln
+      run: dotnet restore Ruler.Wpf.sln
+      working-directory: src
+
+    run: |
+        dotnet sonarscanner begin /o:xclemence \
+        /k:xclemence_Ruler.Wpf \
+        /d:sonar.host.url=https://sonarcloud.io
+      working-directory: src
+
     - name: Build
-      run: dotnet build src/Ruler.Wpf.sln --configuration Release --no-restore
+      run: dotnet build Ruler.Wpf.sln --configuration Release --no-restore
+      working-directory: src
+
+    - name: stop sonar scanner
+      run: dotnet sonarscanner end 
+      working-directory: src
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
