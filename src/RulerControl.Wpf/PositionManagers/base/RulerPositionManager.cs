@@ -20,13 +20,13 @@ namespace RulerControl.Wpf.PositionManagers
 
     public abstract class RulerPositionManager
     {
-        public RulerPositionManager(RulerBase control) => Control = control;
+        protected RulerPositionManager(RulerBase control) => Control = control;
 
         public RulerBase Control { get; private set; }
 
         public abstract Line CreateMajorLine(double offset);
         public abstract Line CreateMinorLine(double offset);
-        public abstract TextBlock CreateText(double text, double offset);
+        public abstract TextBlock CreateText(double value, double offset);
         public abstract double GetSize();
         public abstract double GetHeight();
 

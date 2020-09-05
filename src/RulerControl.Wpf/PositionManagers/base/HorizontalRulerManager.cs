@@ -13,7 +13,7 @@ namespace RulerControl.Wpf.PositionManagers
 {
     public abstract class HorizontalRulerManager : RulerPositionManager
     {
-        public HorizontalRulerManager(RulerBase control) : base(control)  { }
+        protected HorizontalRulerManager(RulerBase control) : base(control)  { }
 
         public override double GetSize() => Control.ActualWidth;
         public override double GetHeight() => Control.ActualHeight;

@@ -215,13 +215,13 @@ namespace RulerControl.Wpf
             }
         }
 
-        protected override void UpdateMarkerControlReference(UIElement oldControl, UIElement newControl) 
+        protected override void UpdateMarkerControlReference(UIElement oldElement, UIElement newElement) 
         {
-            if (oldControl != null)
-                oldControl.MouseMove -= OnExternalMouseMouve;
+            if (oldElement != null)
+                oldElement.MouseMove -= OnExternalMouseMouve;
 
-            if (newControl != null)
-                newControl.MouseMove += OnExternalMouseMouve;
+            if (newElement != null)
+                newElement.MouseMove += OnExternalMouseMouve;
         }
 
         private void UnloadControl()
